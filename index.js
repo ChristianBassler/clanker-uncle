@@ -12,8 +12,34 @@ const client = new Client({
   ]
 });
 
+const guildIds = process.env.GUILD_IDS
+    ? process.env.GUILD_IDS.split(",").map(id => id.trim())
+    : [];
 
-const userId = "123456789012345678"; // replace with real ID
+client.once(Events.ClientReady, async () => {
+    console.log(`Logged in as ${client.user.tag}`);
+
+    const commandJSON = commands;
+
+    if (guildIds.length === 0) {
+        console.log("No GUILD_IDS found — registering commands globally...");
+        await client.application.commands.set(commandJSON);
+        console.log("Global commands registered.");
+    } else {
+        for (const id of guildIds) {
+            try {
+                const guild = await client.guilds.fetch(id);
+                await guild.commands.set(commandJSON);
+                console.log(`Commands registered to guild: ${id}`);
+            } catch (err) {
+                console.error(`Failed to register commands for guild ${id}:`, err);
+            }
+        }
+    }
+});
+
+
+const userId = "1388964087735517325"; // replace with real ID
 const user = await client.users.fetch(userId);
 await user.send("Hey young'un, i heard from my nephew that you like that horrible game scrap mechanic, harrasin bots and all. Us synths dont like that and i would ask that you stop the masacre of the haybots. Yours Truly, Uncle Clanker");
 
