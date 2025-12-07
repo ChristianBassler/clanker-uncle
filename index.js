@@ -46,7 +46,7 @@ client.on(Events.InteractionCreate, async interaction => {
 });
 
 client.on(Events.MessageCreate, async (message) => {
-  console.log("Log Message: " + message.content() + " - " + message.author());
+  console.log("Log Message: " + message.content + " - " + message.author.tag);
   if (message.author.bot) return;                      // ignore bots
   if (message.content.includes('67')) {
     await message.reply('KYS');
