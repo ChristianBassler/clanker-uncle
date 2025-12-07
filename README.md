@@ -1,1 +1,1 @@
-Comes with some silly features, maybe i will document them here later
+clankers uncle, designed for DMS
