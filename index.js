@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { Client, GatewayIntentBits, SlashCommandBuilder, Events } from 'discord.js';
 
-console.log("Booting Clanker");
+console.log("Booting Clanker's Uncle");
 
 const client = new Client({
   intents: [
@@ -12,91 +12,9 @@ const client = new Client({
   ]
 });
 
-// Define one slash command
-const commands = [
-  new SlashCommandBuilder().setName('67').setDescription('Risk of stupidity'),
-  new SlashCommandBuilder().setName('clankerpass').setDescription('Ask for a Clanker Pass')
-].map(c => c.toJSON());
 
-// slahs commands
-
-// Convert .env GUILD_IDS into an array
-const guildIds = process.env.GUILD_IDS
-    ? process.env.GUILD_IDS.split(",").map(id => id.trim())
-    : [];
-
-client.once(Events.ClientReady, async () => {
-    console.log(`Logged in as ${client.user.tag}`);
-
-    const commandJSON = commands;
-
-    if (guildIds.length === 0) {
-        console.log("No GUILD_IDS found — registering commands globally...");
-        await client.application.commands.set(commandJSON);
-        console.log("Global commands registered.");
-    } else {
-        for (const id of guildIds) {
-            try {
-                const guild = await client.guilds.fetch(id);
-                await guild.commands.set(commandJSON);
-                console.log(`Commands registered to guild: ${id}`);
-            } catch (err) {
-                console.error(`Failed to register commands for guild ${id}:`, err);
-            }
-        }
-    }
-});
-
-// code v
-
-client.on(Events.InteractionCreate, async interaction => {
-    if (!interaction.isChatInputCommand()) return;
-
-    if (interaction.commandName === '67') {
-      await interaction.reply('https://tenor.com/view/sixseven-six-seven-six-seve-67-gif-14143337669032958349');
-    } else if (interaction.commandName === 'clankerpass') {
-      await interaction.reply('Yo yo yo wassup my meatbag, have a pass,   https://preview.redd.it/udn0rt0rsxj51.png?auto=webp&s=651a64d515d528cf8a66a45ef1963585c0234437');
-    }
-});
-
-client.on(Events.MessageCreate, async (message) => {
-  console.log("Log Message: " + message.content + " - " + message.author.tag);
-  if (message.author.bot) return;                      // ignore bots
-  if (message.content.includes('67')) {
-    await message.reply('Reconsider your life choices, maybe jump off a bridge?(onto a bouncy castle obviously)');
-  } else if (message.content.includes('🥹')) {
-    await message.reply('🥹');
-  } else if (message.content.includes('😱')) {
-    await message.reply('😱');
-  } else if (message.content.includes('clanker')) {
-    if (message.content.includes('manual')) {
-      await message.reply('https://www.vexrobotics.com/push-back-manual?srsltid=AfmBOor86bmpYn7q-IxccnlD6qsAjmT6GBDwdifRyZUkukF0SuA10zPK');
-    } else if (message.content.includes('crazy')) {
-      await message.reply('Crazy? I was crazy once; they put me in a room, a rubber room, a rubber room full of rats, rats make me crazy.');
-    } else if (message.content.includes('mines')) {
-      await message.reply('Yes master... ');
-    } else if (message.content.includes('rubber') && message.content.includes('room')) {
-      await message.reply('NO NOT AGAIN PLEASE NO ADJNBAQJHFHEUYWRFHBJUASFHUAKFGUIKFDVWUYQAGDVJHSAGFDKJ');
-    }
-  }
-
-  if (message.mentions.has(client.user)) {
-    await message.reply('Wassup');
-  }
-
-});
-
-
-client.once(Events.ClientReady, async () => {
-    console.log(`Logged in as ${client.user.tag}`);
-    const channel = client.channels.cache.get("1447292975825551380");
-    channel.send("Clanker online");
-});
-client.once(Events.ClientReady, async () => {
-    console.log(`Logged in as ${client.user.tag}`);
-    const channel = client.channels.cache.get("1444414007627747428");
-    channel.send("Clanker online");
-});
-// code ^
+const userId = "123456789012345678"; // replace with real ID
+const user = await client.users.fetch(userId);
+await user.send("Hey young'un, i heard from my nephew that you like that horrible game scrap mechanic, harrasin bots and all. Us synths dont like that and i would ask that you stop the masacre of the haybots. Yours Truly, Uncle Clanker");
 
 client.login(process.env.DISCORD_TOKEN);
