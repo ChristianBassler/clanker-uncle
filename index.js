@@ -12,10 +12,25 @@ const client = new Client({
   ]
 });
 
-/*
-const userId = "1388964087735517325"; // replace with real ID
-const user = await client.users.fetch(userId);
-await user.send("Hey young'un, i heard from my nephew that you like that horrible game scrap mechanic, harrasin bots and all. Us synths dont like that and i would ask that you stop the masacre of the haybots. Yours Truly, Uncle Clanker");
-*/
+async function mesZach() {
+  const userId = "1388964087735517325";
+  
+  try {
+    const user = await client.users.fetch(userId);
+    await user.send(
+      "Hey young'un, I heard from my nephew that you like that horrible game Scrap Mechanic, harassing bots and all. Us synths don't like that and I would ask that you stop the massacre of the haybots. Yours Truly, Uncle Clanker."
+    );
+
+    console.log("DM sucecss");
+  } catch (err) {
+    console.error("DM Failed: ", err);
+  }
+}
+
+// Run AFTER bot is ready
+client.once(Events.ClientReady, () => {
+  console.log(`Logged in as ${client.user.tag}`);
+  mesZach();
+});
 
 client.login(process.env.DISCORD_TOKEN);
