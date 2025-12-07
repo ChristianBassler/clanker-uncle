@@ -18,20 +18,29 @@ const commands = [
 
 // slahs commands
 
-const guildIds = process.env.GUILD_IDS.split(",").map(id => id.trim());
+// Convert .env GUILD_IDS into an array
+const guildIds = process.env.GUILD_IDS
+    ? process.env.GUILD_IDS.split(",").map(id => id.trim())
+    : [];
 
 client.once(Events.ClientReady, async () => {
     console.log(`Logged in as ${client.user.tag}`);
 
-    const commandsJson = commands.map(c => c.toJSON());
+    const commandJSON = commands;
 
-    for (const id of guildIds) {
-        try {
-            const guild = await client.guilds.fetch(id);
-            await guild.commands.set(commandsJson);
-            console.log(`Commands registered to guild: ${id}`);
-        } catch (err) {
-            console.error(`Error registering commands for guild ${id}:`, err);
+    if (guildIds.length === 0) {
+        console.log("No GUILD_IDS found — registering commands globally...");
+        await client.application.commands.set(commandJSON);
+        console.log("Global commands registered.");
+    } else {
+        for (const id of guildIds) {
+            try {
+                const guild = await client.guilds.fetch(id);
+                await guild.commands.set(commandJSON);
+                console.log(`Commands registered to guild: ${id}`);
+            } catch (err) {
+                console.error(`Failed to register commands for guild ${id}:`, err);
+            }
         }
     }
 });
